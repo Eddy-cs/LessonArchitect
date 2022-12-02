@@ -1,0 +1,23 @@
+.form__container {
+  display: grid;
+  margin-top: 30px;
+  gap: 30px;
+}
+
+.form__story {
+  min-height: 30vh;
+  padding: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 8rem;
+}
+
+.form__button {
+  position: fixed;
+  border-radius: 20px;
+  width: 40%;
+  min-width: 264px;
+  max-width: 400px;
+  bottom: 4%;
+  left: 50%;
+  transform: translateX(-50%);
+}

@@ -1,0 +1,8 @@
+.about{
+    display: grid;
+    gap: 2rem;
+    margin-top: 2rem;
+    place-self: start;
+    text-align: center;
+    z-index: 1;
+}

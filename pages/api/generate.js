@@ -9,7 +9,7 @@ const openai = new OpenAIApi(configuration);
 let allowRequest = true;
 
 function checkRequestLength(reqGenre, reqTopic, reqTheme) {
-  if (reqGenre.length > 18 || reqTopic.length > 18 || reqTheme.length > 18) {
+  if (reqGenre.length > 50 || reqTopic.length > 25 || reqTheme.length > 25) {
     allowRequest = false;
   }
 }
@@ -71,7 +71,7 @@ export default async function openAiCreate(req, res) {
         uid: req.body.uid,
         genre: req.body.genre,
         user: req.body.user,
-        title: `The ${req.body.topic} and The ${req.body.theme}`,
+        title: `${req.body.theme}`,
         story: response,
       };
       addData(storyData);
@@ -104,5 +104,5 @@ async function contenFilter(resp) {
 }
 
 function generatePrompt(genre, topic, theme) {
-  return `Award winning ${genre} story, written by using the topics "${topic}" and "${theme}":\n by Nathan K. Rose\n\n`;
+  return `A lesson plan for a ${genre} class, subject ${topic}, lesson${theme}\n`;
 }

@@ -9,17 +9,17 @@ import {
 
 const firebaseConfigServer = {
   apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: "little-fiction-db.firebaseapp.com",
-  projectId: "little-fiction-db",
-  storageBucket: "little-fiction-db.appspot.com",
-  messagingSenderId: "575224040852",
-  appId: "1:575224040852:web:c966d9b16ca85711191381",
-  measurementId: "G-HM6J59Y6KS",
+  authDomain: "lessonarchitect.firebaseapp.com",
+  projectId: "lessonarchitect",
+  storageBucket: "lessonarchitect.appspot.com",
+  messagingSenderId: "197251585735",
+  appId: "1:197251585735:web:85f7712d62522981c050e2",
+  measurementId: "G-9D5CZ7DCKV",
 };
 
-const appTwo = initializeApp(firebaseConfigServer, "serverConfig");
+const appTwo = initializeApp(firebaseConfigServer, "lessonArchitect");
 const db = getFirestore(appTwo);
-const storiesCollectionRef = collection(db, "stories");
+const storiesCollectionRef = collection(db, "lessons");
 
 export default async function getClientData(req, res) {
   if (req.method === "GET") {

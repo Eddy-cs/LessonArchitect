@@ -11,7 +11,7 @@ import {
   Slider,
 } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import styles from "./StoryForm.module.css";
+import styles from "../styles/GenerateForm.module.css";
 
 export default function StoryForm(props) {
   const [genre, setGenre] = useState("");
@@ -86,7 +86,7 @@ export default function StoryForm(props) {
           />
         </div>
         <FormControl>
-          <InputLabel id="demo">Genre</InputLabel>
+          <InputLabel id="demo">Grade</InputLabel>
           <Select
             value={genre}
             labelId="demo"

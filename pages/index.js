@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import StoryList from "../components/StoryList";
 
-function Favorites() {
+function UserLessons() {
   const [stories, setStories] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -30,4 +30,4 @@ function Favorites() {
   );
 }
 
-export default Favorites;
+export default UserLessons;

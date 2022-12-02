@@ -32,7 +32,7 @@ export default function Navbar(props) {
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Typography variant="h6" sx={{ my: 2 }}>
-        Little Fiction
+        LessonArchitect
       </Typography>
       <Divider />
       <List>
@@ -44,7 +44,7 @@ export default function Navbar(props) {
           </Link>
         </ListItem>
         <ListItem disablePadding>
-          <Link href="/create-story">
+          <Link href="/generate">
             <ListItemButton variant="text" sx={{ textAlign: "center" }}>
               <ListItemText primary={"Create a story"} />
             </ListItemButton>
@@ -90,7 +90,7 @@ export default function Navbar(props) {
             component="div"
             sx={{ flexGrow: 1, display: { sm: "block" } }}
           >
-            Little Fiction
+            LessonArchitect
           </Typography>
           <Box
             sx={{
@@ -108,7 +108,7 @@ export default function Navbar(props) {
                 Stories
               </Button>
             </Link>
-            <Link href="/create-story">
+            <Link href="/generate">
               <Button sx={{ color: "#fff" }} variant="text">
                 Create
               </Button>

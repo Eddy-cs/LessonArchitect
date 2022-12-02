@@ -1,15 +1,15 @@
 import { Fragment } from "react";
 import { auth } from "../components/Login";
-import StoryForm from "../components/StoryForm";
+import GenerateForm from "../components/GenerateForm";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-function CreateStory() {
+function Generate() {
   const [user] = useAuthState(auth);
   return (
     <Fragment>
-      <StoryForm userData={user || "null"} />
+      <GenerateForm userData={user || "null"} />
     </Fragment>
   );
 }
 
-export default CreateStory;
+export default Generate;

@@ -33,7 +33,7 @@ function StoryList(props) {
       )}
       <CardContent>
         <Typography
-          sx={{ whiteSpace: "pre-line", marginTop: -7 }}
+          sx={{ whiteSpace: "pre-line", marginTop: -3 }}
           variant="body1"
         >
           {e.story}

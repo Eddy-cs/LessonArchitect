@@ -1,23 +1,18 @@
-.form__container {
+.hero__form {
   display: grid;
   margin-top: 30px;
   gap: 30px;
 }
 
-.form__story {
+.hero__result {
   min-height: 30vh;
   padding: 1rem;
   margin-top: 2rem;
   margin-bottom: 8rem;
 }
 
-.form__button {
-  position: fixed;
-  border-radius: 20px;
-  width: 40%;
-  min-width: 264px;
-  max-width: 400px;
-  bottom: 4%;
-  left: 50%;
-  transform: translateX(-50%);
+.hero{
+ display: grid;
+ grid-auto-flow: column;
+ place-items: center;
 }

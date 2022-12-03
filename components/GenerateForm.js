@@ -63,86 +63,112 @@ export default function StoryForm(props) {
 
   return (
     <Fragment>
-      <form className={styles.form__container} onSubmit={submitHandler}>
-        <Typography variant="h5">Generate a lesson plan</Typography>
-        <div
-          style={{
-            display: "grid",
-            gridAutoFlow: "column",
-            gap: 30,
-          }}
-        >
-          <TextField
-            inputProps={{ maxLength: 25 }}
-            required
-            inputRef={topicRef}
-            label="Subject"
-          />
-          <TextField
-            inputProps={{ maxLength: 25 }}
-            required
-            inputRef={themeRef}
-            label="Lesson"
-          />
+      <div className={styles.hero}>
+        {/* Hero Description */}
+        <div>
+          <Typography fontWeight={700} variant="h3">
+            Generate a lesson plan
+          </Typography>
+          <Typography fontWeight={700} variant="h4">
+            Spend less time planning and more inspiring
+          </Typography>
         </div>
-        <FormControl>
-          <InputLabel id="demo">Grade</InputLabel>
-          <Select
-            value={genre}
-            labelId="demo"
-            id="sdfs"
-            label="Genre"
-            required
-            onChange={handleChange}
+        {/* Hero Description */}
+        {/* Hero Form */}
+        <form className={styles.hero__form} onSubmit={submitHandler}>
+          <div
+            style={{
+              display: "grid",
+              gridAutoFlow: "column",
+              gap: 30,
+            }}
           >
-            <MenuItem value={"Kindergarden"}>Kindergarden</MenuItem>
-            <MenuItem value={"Elementary Grade 1"}>Elementary Grade 1</MenuItem>
-            <MenuItem value={"Elementary Grade 2"}>Elementary Grade 2</MenuItem>
-            <MenuItem value={"Elementary Grade 3"}>Elementary Grade 3</MenuItem>
-            <MenuItem value={"Elementary Grade 4"}>Elementary Grade 4</MenuItem>
-            <MenuItem value={"Elementary Grade 5"}>Elementary Grade 5</MenuItem>
-            <MenuItem value={"Elementary Grade 6"}>Elementary Grade 6</MenuItem>
-            <MenuItem value={"Junior High School Grade 7"}>
-              Junior High School Grade 7
-            </MenuItem>
-            <MenuItem value={"Junior High School Grade 8"}>
-              Junior High School Grade 8
-            </MenuItem>
-            <MenuItem value={"Junior High School Grade 9"}>
-              Junior High School Grade 9
-            </MenuItem>
-            <MenuItem value={"Junior High School Grade 10"}>
-              Junior High School Grade 10
-            </MenuItem>
-            <MenuItem value={"Senior High School Grade 11"}>
-              Senior High School Grade 11
-            </MenuItem>
-            <MenuItem value={"Senior High School Grade 12"}>
-              Senior High School Grade 12
-            </MenuItem>
-          </Select>
-        </FormControl>
-        <Slider
-          aria-label="Temperature"
-          defaultValue={7}
-          // getAriaValueText={valuetext}
-          valueLabelDisplay="auto"
-          step={1}
-          marks
-          min={1}
-          max={10}
-        />
-        <Button
-          className={styles.form__button}
-          size="large"
-          variant={buttonLoad}
-          type="submit"
-          endIcon={<ArrowForwardIcon />}
-        >
-          Create
-        </Button>
-      </form>
-      <Card className={styles.form__story} variant="outlined">
+            <TextField
+              inputProps={{ maxLength: 25 }}
+              required
+              inputRef={topicRef}
+              label="Subject"
+            />
+            <TextField
+              inputProps={{ maxLength: 25 }}
+              required
+              inputRef={themeRef}
+              label="Lesson"
+            />
+          </div>
+          <FormControl>
+            <InputLabel id="demo">Grade</InputLabel>
+            <Select
+              value={genre}
+              labelId="demo"
+              id="sdfs"
+              label="Genre"
+              required
+              onChange={handleChange}
+            >
+              <MenuItem value={"Kindergarden"}>Kindergarden</MenuItem>
+              <MenuItem value={"Elementary Grade 1"}>
+                Elementary Grade 1
+              </MenuItem>
+              <MenuItem value={"Elementary Grade 2"}>
+                Elementary Grade 2
+              </MenuItem>
+              <MenuItem value={"Elementary Grade 3"}>
+                Elementary Grade 3
+              </MenuItem>
+              <MenuItem value={"Elementary Grade 4"}>
+                Elementary Grade 4
+              </MenuItem>
+              <MenuItem value={"Elementary Grade 5"}>
+                Elementary Grade 5
+              </MenuItem>
+              <MenuItem value={"Elementary Grade 6"}>
+                Elementary Grade 6
+              </MenuItem>
+              <MenuItem value={"Junior High School Grade 7"}>
+                Junior High School Grade 7
+              </MenuItem>
+              <MenuItem value={"Junior High School Grade 8"}>
+                Junior High School Grade 8
+              </MenuItem>
+              <MenuItem value={"Junior High School Grade 9"}>
+                Junior High School Grade 9
+              </MenuItem>
+              <MenuItem value={"Junior High School Grade 10"}>
+                Junior High School Grade 10
+              </MenuItem>
+              <MenuItem value={"Senior High School Grade 11"}>
+                Senior High School Grade 11
+              </MenuItem>
+              <MenuItem value={"Senior High School Grade 12"}>
+                Senior High School Grade 12
+              </MenuItem>
+            </Select>
+          </FormControl>
+          <Slider
+            aria-label="Temperature"
+            defaultValue={7}
+            // getAriaValueText={valuetext}
+            valueLabelDisplay="auto"
+            step={1}
+            marks
+            min={1}
+            max={10}
+          />
+          <Button
+            size="large"
+            variant={buttonLoad}
+            type="submit"
+            endIcon={<ArrowForwardIcon />}
+          >
+            Create
+          </Button>
+        </form>
+        {/* Hero Form */}
+        {/* Generated Result */}
+        {/* Generated Result */}
+      </div>
+      <Card className={styles.hero__result} variant="outlined">
         <Typography variant="h4">
           {result ===
           "Sorry, the maximum number of requests for today has been reached. Please sign in or try again tomorrow."

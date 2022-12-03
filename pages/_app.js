@@ -20,6 +20,21 @@ const muiTheme = createTheme({
       default: "#fff8f5",
     },
   },
+  typography: {
+    fontFamily: [
+      "Nunito",
+      "-apple-system",
+      "BlinkMacSystemFont",
+      '"Segoe UI"',
+      "Roboto",
+      '"Helvetica Neue"',
+      "Arial",
+      "sans-serif",
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(","),
+  },
 });
 
 function MyApp({ Component, pageProps }) {
@@ -28,7 +43,7 @@ function MyApp({ Component, pageProps }) {
       <ThemeProvider theme={muiTheme}>
         <CssBaseline />
         <Head>
-          <title>Little Fiction</title>
+          <title>Lesson Architect</title>
         </Head>
         <Navbar />
         <main className={styles.layout__grid}>

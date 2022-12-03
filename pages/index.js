@@ -1,31 +1,10 @@
-import { Fragment, useEffect, useState } from "react";
-import StoryList from "../components/StoryList";
+import { Fragment } from "react";
+import { Typography } from "@mui/material";
 
 function UserLessons() {
-  const [stories, setStories] = useState();
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    async function getStories() {
-      const response = await fetch("data.json", {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      });
-      const data = await response.json();
-      setStories(data);
-      setIsLoading(true);
-    }
-    getStories();
-  }, []);
   return (
     <Fragment>
-      {isLoading === true ? (
-        <StoryList stories={stories} pageTitle={"Favorite Stories"} />
-      ) : (
-        <div>Loading...</div>
-      )}
+      <Typography>My Lessons</Typography>
     </Fragment>
   );
 }

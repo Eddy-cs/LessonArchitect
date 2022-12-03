@@ -39,7 +39,7 @@ export default function Navbar(props) {
         <ListItem disablePadding>
           <Link href="/">
             <ListItemButton variant="text" sx={{ textAlign: "center" }}>
-              <ListItemText primary={"Favorites"} />
+              <ListItemText primary={"Lessons"} />
             </ListItemButton>
           </Link>
         </ListItem>
@@ -51,9 +51,9 @@ export default function Navbar(props) {
           </Link>
         </ListItem>
         <ListItem disablePadding>
-          <Link href="/all-stories">
+          <Link href="/all-lessons">
             <ListItemButton variant="text" sx={{ textAlign: "center" }}>
-              <ListItemText primary={"All stories"} />
+              <ListItemText primary={"Explore"} />
             </ListItemButton>
           </Link>
         </ListItem>
@@ -100,12 +100,12 @@ export default function Navbar(props) {
           >
             <Link href="/">
               <Button sx={{ color: "#fff" }} variant="text">
-                Favorites
+                Lessons
               </Button>
             </Link>
-            <Link href="/all-stories">
+            <Link href="/all-lessons">
               <Button sx={{ color: "#fff" }} variant="text">
-                Stories
+                Explore
               </Button>
             </Link>
             <Link href="/generate">

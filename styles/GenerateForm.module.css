@@ -2,6 +2,10 @@
   display: grid;
   margin-top: 30px;
   gap: 30px;
+  column-gap: 30px;
+}
+.hero__title{
+  padding: 1rem 0;
 }
 
 .hero__result {
@@ -13,6 +17,14 @@
 
 .hero{
  display: grid;
+ grid-template-columns: 1fr 1fr;
  grid-auto-flow: column;
  place-items: center;
+ gap: 2rem;
+}
+@media (max-width: 600px) {
+.hero{
+  display: flex;
+  flex-direction: column;
+}
 }

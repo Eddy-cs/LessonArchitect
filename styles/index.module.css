@@ -1,0 +1,32 @@
+.lessons__create{
+    height: 321px;
+    width: 204px;
+    border-radius: 23px;
+    border: 4px dashed #F7EDE4;
+    border-radius: 23px;
+    display: grid;
+}
+
+.lessons__center{
+    display: grid;
+    width: 90px;
+    height: 90px;
+    border-radius: 50px;
+    border: 8px solid #F6EDE4;
+    place-self: center;
+}
+
+.lessons__plus{
+    width: 7px;
+    height: 35px;
+    background-color: #F6EDE4;
+    place-self: center;
+    position: absolute;
+}
+
+.lessons__plus_horizontal{
+    place-self: center;
+    width: 35px;
+    height: 7px;
+    background-color: #F6EDE4;
+}

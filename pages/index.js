@@ -1,10 +1,17 @@
+import styles from "../styles/index.module.css";
 import { Fragment } from "react";
-import { Typography } from "@mui/material";
+import { Card, CardContent, Typography } from "@mui/material";
 
 function UserLessons() {
   return (
     <Fragment>
-      <Typography>My Lessons</Typography>
+      Create a Lesson
+      <div className={styles.lessons__create}>
+        <div className={styles.lessons__center}>
+          <div className={styles.lessons__plus}></div>
+          <div className={styles.lessons__plus_horizontal}></div>
+        </div>
+      </div>
     </Fragment>
   );
 }

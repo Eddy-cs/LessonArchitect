@@ -4,7 +4,7 @@ import { Card, CardContent, Typography } from "@mui/material";
 import Masonry from "@mui/lab/Masonry";
 import Avatar from "@mui/material/Avatar";
 
-function StoryList(props) {
+function LessonList(props) {
   const list = props.stories.map((e) => (
     <Card key={e.id}>
       <CardContent sx={{ paddingBottom: 1 }}>
@@ -64,4 +64,4 @@ function StoryList(props) {
   );
 }
 
-export default StoryList;
+export default LessonList;

@@ -65,12 +65,19 @@ export default function StoryForm(props) {
     <Fragment>
       <div className={styles.hero}>
         {/* Hero Description */}
-        <div>
-          <Typography fontWeight={700} variant="h3">
-            Generate a lesson plan
-          </Typography>
-          <Typography fontWeight={700} variant="h4">
+        <div className={styles.hero__text}>
+          <div className={styles.hero__title}>
+            <Typography fontWeight={700} variant="h3">
+              Generate a lesson plan
+            </Typography>
+          </div>
+
+          <Typography fontWeight={700} variant="h5">
             Spend less time planning and more inspiring
+          </Typography>
+          <Typography fontWeight={400} variant="h6">
+            Simply select a subject, the lesson you want to teach and the school
+            grade.
           </Typography>
         </div>
         {/* Hero Description */}

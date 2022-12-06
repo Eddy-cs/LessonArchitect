@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
-import StoryList from "../components/StoryList";
+import LessonList from "../components/LessonList";
 
 function AllStories() {
   const [stories, setStories] = useState();
@@ -18,7 +18,7 @@ function AllStories() {
   return (
     <Fragment>
       {isLoading === true ? (
-        <StoryList stories={stories} pageTitle={"Latest stories"} />
+        <LessonList stories={stories} pageTitle={"Explore Lessons"} />
       ) : (
         <div>Loading...</div>
       )}

@@ -64,7 +64,6 @@ export default function StoryForm(props) {
   return (
     <Fragment>
       <div className={styles.hero}>
-        {/* Hero Description */}
         <div className={styles.hero__text}>
           <div className={styles.hero__title}>
             <Typography fontWeight={700} variant="h3">
@@ -80,8 +79,6 @@ export default function StoryForm(props) {
             grade.
           </Typography>
         </div>
-        {/* Hero Description */}
-        {/* Hero Form */}
         <form className={styles.hero__form} onSubmit={submitHandler}>
           <div
             style={{
@@ -152,16 +149,19 @@ export default function StoryForm(props) {
               </MenuItem>
             </Select>
           </FormControl>
-          <Slider
-            aria-label="Temperature"
-            defaultValue={7}
-            // getAriaValueText={valuetext}
-            valueLabelDisplay="auto"
-            step={1}
-            marks
-            min={1}
-            max={10}
-          />
+          <div>
+            <Typography>Randomness</Typography>
+            <Slider
+              aria-label="Temperature"
+              defaultValue={7}
+              // getAriaValueText={valuetext}
+              valueLabelDisplay="auto"
+              step={1}
+              marks
+              min={1}
+              max={10}
+            />
+          </div>
           <Button
             size="large"
             variant={buttonLoad}

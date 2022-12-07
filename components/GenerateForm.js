@@ -14,35 +14,27 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import styles from "../styles/GenerateForm.module.css";
 
 export default function StoryForm(props) {
-  const [genre, setGenre] = useState("");
-  const topicRef = useRef();
-  const themeRef = useRef();
+  const [grade, setGrade] = useState("");
   const [result, setResult] = useState();
   const [title, setTitle] = useState();
   const [buttonLoad, setButtonLoad] = useState("contained");
-
-  const handleChange = (event) => {
-    setGenre(event.target.value);
-    console.log(genre);
-  };
+  const subjectRef = useRef();
+  const lessonRef = useRef();
 
   async function submitHandler(event) {
     event.preventDefault();
     setButtonLoad("disabled");
 
-    const enteredTopic = topicRef.current.value;
-    const enteredTheme = themeRef.current.value;
-
-    const storyData = {
-      uid: props.userData.uid || props.userData,
-      user: {
-        displayName: props.userData.displayName,
-        email: props.userData.email,
-        photoURL: props.userData.photoURL,
+    const lessonData = {
+      uid: props.userData.uid,
+      displayName: props.userData.displayName,
+      email: props.userData.email,
+      photoURL: props.userData.photoURL,
+      lesson: {
+        subject: subjectRef.current.value,
+        lesson: lessonRef.current.value,
+        grade: grade,
       },
-      topic: enteredTopic,
-      theme: enteredTheme,
-      genre: genre,
     };
 
     const response = await fetch("/api/generate", {
@@ -50,16 +42,19 @@ export default function StoryForm(props) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(storyData),
+      body: JSON.stringify(lessonData),
     });
 
     const data = await response.json();
 
-    console.log(data.result);
     setResult(data.result);
-    setTitle(`The ${enteredTopic} and The ${enteredTheme}`);
+    setTitle(lessonRef.current.value);
     setButtonLoad("contained");
   }
+
+  const handleChange = (event) => {
+    setGrade(event.target.value);
+  };
 
   return (
     <Fragment>
@@ -90,20 +85,20 @@ export default function StoryForm(props) {
             <TextField
               inputProps={{ maxLength: 25 }}
               required
-              inputRef={topicRef}
+              inputRef={subjectRef}
               label="Subject"
             />
             <TextField
               inputProps={{ maxLength: 25 }}
               required
-              inputRef={themeRef}
+              inputRef={lessonRef}
               label="Lesson"
             />
           </div>
           <FormControl>
             <InputLabel id="demo">Grade</InputLabel>
             <Select
-              value={genre}
+              value={grade}
               labelId="demo"
               id="sdfs"
               label="Genre"
@@ -171,9 +166,6 @@ export default function StoryForm(props) {
             Create
           </Button>
         </form>
-        {/* Hero Form */}
-        {/* Generated Result */}
-        {/* Generated Result */}
       </div>
       <Card className={styles.hero__result} variant="outlined">
         <Typography variant="h4">

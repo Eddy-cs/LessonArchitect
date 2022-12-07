@@ -30,7 +30,7 @@ export default function StoryForm(props) {
       displayName: props.userData.displayName,
       email: props.userData.email,
       photoURL: props.userData.photoURL,
-      lesson: {
+      generatedLesson: {
         subject: subjectRef.current.value,
         lesson: lessonRef.current.value,
         grade: grade,

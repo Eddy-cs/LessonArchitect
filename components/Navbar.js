@@ -46,7 +46,7 @@ export default function Navbar(props) {
         <ListItem disablePadding>
           <Link href="/generate">
             <ListItemButton variant="text" sx={{ textAlign: "center" }}>
-              <ListItemText primary={"Create a story"} />
+              <ListItemText primary={"Create"} />
             </ListItemButton>
           </Link>
         </ListItem>

@@ -21,7 +21,7 @@ export default async function openAiCreate(req, res) {
         req.body.generatedLesson.subject,
         req.body.generatedLesson.lesson
       ),
-      temperature: 0.85,
+      temperature: req.body.generatedLesson.randomness,
       top_p: 1,
       max_tokens: 600,
     });

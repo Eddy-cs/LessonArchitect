@@ -13,6 +13,7 @@ export default async function openAiCreate(req, res) {
     req.body.generatedLesson.subject,
     req.body.generatedLesson.lesson
   );
+  console.log(req.body.generatedLesson.randomness);
   if (allowRequest === true) {
     const completion = await openai.createCompletion({
       model: "text-davinci-002",
@@ -21,7 +22,7 @@ export default async function openAiCreate(req, res) {
         req.body.generatedLesson.subject,
         req.body.generatedLesson.lesson
       ),
-      temperature: req.body.generatedLesson.randomness,
+      temperature: req.body.generatedLesson.randomness / 100,
       top_p: 1,
       max_tokens: 600,
     });

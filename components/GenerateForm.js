@@ -9,12 +9,16 @@ import {
   FormControl,
   InputLabel,
   Slider,
+  Tooltip,
+  IconButton,
 } from "@mui/material";
+import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import styles from "../styles/GenerateForm.module.css";
 
 export default function StoryForm(props) {
   const [grade, setGrade] = useState("");
+  const [randomness, setRandomness] = useState(7);
   const [result, setResult] = useState();
   const [title, setTitle] = useState();
   const [buttonLoad, setButtonLoad] = useState("contained");
@@ -31,6 +35,7 @@ export default function StoryForm(props) {
       email: props.userData.email,
       photoURL: props.userData.photoURL,
       generatedLesson: {
+        randomness: randomness,
         subject: subjectRef.current.value,
         lesson: lessonRef.current.value,
         grade: grade,
@@ -54,6 +59,11 @@ export default function StoryForm(props) {
 
   const handleChange = (event) => {
     setGrade(event.target.value);
+  };
+
+  const sliderChange = (event) => {
+    setRandomness(event.target.value);
+    console.log(randomness);
   };
 
   return (
@@ -145,11 +155,25 @@ export default function StoryForm(props) {
             </Select>
           </FormControl>
           <div>
-            <Typography>Randomness</Typography>
+            <Typography>
+              Randomness
+              <Tooltip title="(Optional) - The lower the number, the more deterministic the result.">
+                <IconButton
+                  sx={{
+                    marginLeft: 1,
+                    backgroundColor: "#ebebeb",
+                    height: 20,
+                    width: 20,
+                  }}
+                >
+                  <QuestionMarkIcon sx={{ fontSize: 15 }} />
+                </IconButton>
+              </Tooltip>
+            </Typography>
             <Slider
               aria-label="Temperature"
               defaultValue={7}
-              // getAriaValueText={valuetext}
+              onChange={sliderChange}
               valueLabelDisplay="auto"
               step={1}
               marks

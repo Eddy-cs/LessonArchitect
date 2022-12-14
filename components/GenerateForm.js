@@ -37,7 +37,7 @@ export default function StoryForm(props) {
       generatedLesson: {
         randomness: randomness,
         subject: subjectRef.current.value,
-        lesson: lessonRef.current.value,
+        lessonTitle: lessonRef.current.value,
         grade: grade,
       },
     };

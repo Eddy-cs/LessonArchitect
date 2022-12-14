@@ -85,18 +85,12 @@ export default async function openAiCreate(req, res) {
     // Checks if response contains inappropriate content based on contentFilter()
     if (filterL == "0" || filterL == "1") {
       const lessonData = {
-        uid: req.body.uid,
-        displayName: req.body.displayName,
-        email: req.body.email,
-        photoURL: req.body.photoURL,
-        generatedLesson: {
-          lesson: req.body.generatedLesson.lesson,
-          subject: req.body.generatedLesson.subject,
-          grade: req.body.generatedLesson.grade,
-          generatedLesson: response,
-        },
+        lessonTitle: req.body.generatedLesson.lesson,
+        subject: req.body.generatedLesson.subject,
+        grade: req.body.generatedLesson.grade,
+        generatedLesson: response,
       };
-      addData(lessonData);
+      addData(lessonData, req.body.uid);
       res.status(200).json({ result: response });
     } else {
       res

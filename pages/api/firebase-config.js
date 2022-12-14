@@ -2,9 +2,10 @@ import { initializeApp } from "firebase/app";
 import {
   getFirestore,
   collection,
-  addDoc,
+  arrayUnion,
   getDocs,
-  serverTimestamp,
+  doc,
+  updateDoc,
 } from "firebase/firestore";
 
 const firebaseConfigServer = {
@@ -32,12 +33,30 @@ export default async function getClientData(req, res) {
   }
 }
 
-export function addData(storyData) {
-  addDoc(storiesCollectionRef, { timestamp: serverTimestamp(), ...storyData });
+export async function addData(storyData, userId) {
+  const documents = await getData();
+  console.log(documents);
+  for (let i = 0; i < documents.length; i++) {
+    if (userId === "null") {
+      let docRef = doc(db, "lessons", Vxhsl1Y6lZdMndTexmPU);
+      console.log("ney mamey");
+      updateDoc(docRef, {
+        generatedLessons: arrayUnion(storyData),
+      });
+    } else if (documents[i].uid === userId) {
+      let docRef = doc(db, "lessons", documents[i].docId);
+      console.log("yey hawuei");
+      updateDoc(docRef, {
+        generatedLessons: arrayUnion(storyData),
+      });
+    }
+  }
 }
 
 export async function getData() {
   const data = await getDocs(storiesCollectionRef);
-  const response = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+  console.log(data.docs);
+  const response = data.docs.map((doc) => ({ ...doc.data(), docId: doc.id }));
+  console.log("response--------------", response);
   return response;
 }

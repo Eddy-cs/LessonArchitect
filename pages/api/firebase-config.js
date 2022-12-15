@@ -20,11 +20,11 @@ const firebaseConfigServer = {
 
 const appTwo = initializeApp(firebaseConfigServer, "lessonArchitect");
 export const db = getFirestore(appTwo);
-const storiesCollectionRef = collection(db, "lessons");
+const lessonsCollectionRef = collection(db, "lessons");
 
 export default async function getClientData(req, res) {
   if (req.method === "GET") {
-    const data = await getDocs(storiesCollectionRef);
+    const data = await getDocs(lessonsCollectionRef);
     const dataObject = data.docs.map((doc) => ({
       ...doc.data(),
       id: doc.id,
@@ -43,7 +43,7 @@ export async function addData(lessonData, docRef) {
 }
 
 export async function getData() {
-  const data = await getDocs(storiesCollectionRef);
+  const data = await getDocs(lessonsCollectionRef);
   const response = data.docs.map((doc) => ({ ...doc.data(), docId: doc.id }));
   return response;
 }

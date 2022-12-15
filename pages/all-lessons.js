@@ -2,23 +2,23 @@ import { Fragment, useEffect, useState } from "react";
 import LessonList from "../components/LessonList";
 
 function AllStories() {
-  const [stories, setStories] = useState();
+  const [lessons, setLessons] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    async function getStories() {
+    async function getLessons() {
       const response = await fetch("/api/firebase-config");
       const data = await response.json();
-      setStories(data);
+      setLessons(data);
       setIsLoading(true);
     }
-    getStories();
+    getLessons();
   }, []);
 
   return (
     <Fragment>
       {isLoading === true ? (
-        <LessonList stories={stories} pageTitle={"Explore Lessons"} />
+        <LessonList lessons={lessons} pageTitle={"Explore Lessons"} />
       ) : (
         <div>Loading...</div>
       )}

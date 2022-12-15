@@ -4,8 +4,8 @@ import {
   collection,
   arrayUnion,
   getDocs,
-  doc,
   updateDoc,
+  Timestamp,
 } from "firebase/firestore";
 
 const firebaseConfigServer = {
@@ -19,7 +19,7 @@ const firebaseConfigServer = {
 };
 
 const appTwo = initializeApp(firebaseConfigServer, "lessonArchitect");
-const db = getFirestore(appTwo);
+export const db = getFirestore(appTwo);
 const storiesCollectionRef = collection(db, "lessons");
 
 export default async function getClientData(req, res) {
@@ -33,30 +33,17 @@ export default async function getClientData(req, res) {
   }
 }
 
-export async function addData(storyData, userId) {
-  const documents = await getData();
-  console.log(documents);
-  for (let i = 0; i < documents.length; i++) {
-    if (userId === "null") {
-      let docRef = doc(db, "lessons", Vxhsl1Y6lZdMndTexmPU);
-      console.log("ney mamey");
-      updateDoc(docRef, {
-        generatedLessons: arrayUnion(storyData),
-      });
-    } else if (documents[i].uid === userId) {
-      let docRef = doc(db, "lessons", documents[i].docId);
-      console.log("yey hawuei");
-      updateDoc(docRef, {
-        generatedLessons: arrayUnion(storyData),
-      });
-    }
-  }
+export async function addData(lessonData, docRef) {
+  updateDoc(docRef, {
+    generatedLessons: arrayUnion({
+      ...lessonData,
+      timestamp: Timestamp.now(),
+    }),
+  });
 }
 
 export async function getData() {
   const data = await getDocs(storiesCollectionRef);
-  console.log(data.docs);
   const response = data.docs.map((doc) => ({ ...doc.data(), docId: doc.id }));
-  console.log("response--------------", response);
   return response;
 }

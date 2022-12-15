@@ -30,7 +30,7 @@ export default function StoryForm(props) {
     setButtonLoad("disabled");
 
     const lessonData = {
-      uid: props.userData.uid,
+      uid: props.userData.uid || "null",
       displayName: props.userData.displayName,
       email: props.userData.email,
       photoURL: props.userData.photoURL,

@@ -1,5 +1,6 @@
 import { Configuration, OpenAIApi } from "openai";
-import { addData, getData } from "./firebase-config";
+import { getData, addData, db } from "./firebase-config";
+import { getDoc, doc } from "firebase/firestore";
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -7,29 +8,49 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 let allowRequest = true;
+let docRef;
 
-// Checks and limits the maximum number of requests per day
-async function checkRequestMax(userid) {
-  const data = await getData();
+export async function checkRequestMax(requestUid) {
   const today = new Date().toLocaleDateString();
-  let allRequests = 0;
+  let anonRequests = 0;
   let userRequests = 0;
 
-  for (let d = 0; d < data.length; d++) {
-    const time = data[d].timestamp;
-    const date = new Date(time.seconds * 1000).toLocaleDateString("en-US");
-    if (date == today) {
-      allRequests++;
-      if (userid !== "null" && data[d].uid === userid) {
-        userRequests++;
+  // Checks request if user is "null"
+  if (requestUid === "null") {
+    docRef = doc(db, "lessons", "Vxhsl1Y6lZdMndTexmPU");
+    let docSnap = await getDoc(docRef);
+    let document = docSnap.data();
+    for (let i = 0; i < document.generatedLessons.length; i++) {
+      const time = document.generatedLessons[i].timestamp;
+      const date = new Date(time.seconds * 1000).toLocaleDateString("en-US");
+      if (date == today) {
+        anonRequests++;
       }
     }
+    if (anonRequests > 4) {
+      allowRequest = false;
+    }
   }
-
-  if (userid === "null" && allRequests >= 10) {
-    allowRequest = false;
-  } else if (allRequests >= 30 || userRequests >= 5) {
-    allowRequest = false;
+  // Checks request if user is loged in
+  else {
+    const allDocuments = await getData();
+    for (let i = 0; i < allDocuments.length; i++) {
+      if (allDocuments[i].uid === requestUid) {
+        docRef = doc(db, "lessons", allDocuments[i].docId);
+        for (let e = 0; e < allDocuments[i].generatedLessons.length; e++) {
+          const time = allDocuments[i].generatedLessons[e].timestamp;
+          const date = new Date(time.seconds * 1000).toLocaleDateString(
+            "en-US"
+          );
+          if (date == today) {
+            userRequests++;
+          }
+        }
+      }
+    }
+    if (userRequests > 8) {
+      allowRequest = false;
+    }
   }
 }
 
@@ -90,7 +111,7 @@ export default async function openAiCreate(req, res) {
         grade: req.body.generatedLesson.grade,
         generatedLesson: response,
       };
-      addData(lessonData, req.body.uid);
+      addData(lessonData, docRef);
       res.status(200).json({ result: response });
     } else {
       res

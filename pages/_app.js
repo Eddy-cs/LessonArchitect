@@ -6,6 +6,8 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Head from "next/head";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../components/Login";
 
 const muiTheme = createTheme({
   palette: {
@@ -38,6 +40,8 @@ const muiTheme = createTheme({
 });
 
 function MyApp({ Component, pageProps }) {
+  const [user] = useAuthState(auth);
+
   return (
     <Fragment>
       <ThemeProvider theme={muiTheme}>
@@ -47,7 +51,7 @@ function MyApp({ Component, pageProps }) {
         </Head>
         <Navbar />
         <main className={styles.layout__grid}>
-          <Component {...pageProps} />
+          <Component {...pageProps} user={user} />
         </main>
         <Footer></Footer>
       </ThemeProvider>

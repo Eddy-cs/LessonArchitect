@@ -1,13 +1,10 @@
 import { Fragment } from "react";
-import { auth } from "../components/Login";
 import GenerateForm from "../components/GenerateForm";
-import { useAuthState } from "react-firebase-hooks/auth";
 
-function Generate() {
-  const [user] = useAuthState(auth);
+function Generate(props) {
   return (
     <Fragment>
-      <GenerateForm userData={user || "null"} />
+      <GenerateForm userData={props.user || "null"} />
     </Fragment>
   );
 }

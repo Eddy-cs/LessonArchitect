@@ -1,13 +1,21 @@
-.lessons__create{
+
+.title{
+    margin: 20px 0;
+    color: #9b7d5f;
+}
+
+.button__create{
     height: 370px;
     width: 250px;
     border-radius: 23px;
     border: 4px dashed #F7EDE4;
     border-radius: 23px;
     display: grid;
+    margin-bottom: 50px;
+    cursor: pointer;
 }
 
-.lessons__center{
+.button__center{
     display: grid;
     width: 90px;
     height: 90px;
@@ -16,7 +24,7 @@
     place-self: center;
 }
 
-.lessons__plus{
+.button__plus{
     width: 7px;
     height: 35px;
     background-color: #F6EDE4;
@@ -24,7 +32,7 @@
     position: absolute;
 }
 
-.lessons__plus_horizontal{
+.button__plus_horizontal{
     place-self: center;
     width: 35px;
     height: 7px;

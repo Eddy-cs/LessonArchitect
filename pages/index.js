@@ -1,45 +1,62 @@
 import styles from "../styles/index.module.css";
+import Link from "next/link";
+import { Typography } from "@mui/material";
 import { Fragment, useEffect, useState } from "react";
 import LessonList from "../components/LessonList";
-import { auth } from "../components/Login";
-import { useAuthState } from "react-firebase-hooks/auth";
 
-function UserLessons() {
-  const [user] = useAuthState(auth);
+function UserLessons(props) {
+  console.log("usuario", props.user);
   const [lessons, setLessons] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    async function getLessons() {
-      const response = await fetch("/api/user-data", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
-      });
-      const data = await response.json();
-      setLessons(data.map((e) => ({ generatedLessons: [e] })));
-      setIsLoading(true);
+    if (props.user) {
+      async function getLessons() {
+        const response = await fetch("/api/user-data", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ uid: props.user.uid }),
+        });
+        const data = await response.json();
+        setIsLoading(true);
+        setLessons([data]);
+      }
+      getLessons();
     }
-    getLessons();
-  }, [user]);
+  }, [props.user]);
 
-  return (
+  const lessonPage = (
     <Fragment>
       {isLoading === true ? (
         <LessonList lessons={lessons} pageTitle={"My Lessons"} />
       ) : (
         <div>Loading...</div>
       )}
-      <div className={styles.lessons__create}>
-        <div className={styles.lessons__center}>
-          <div className={styles.lessons__plus}></div>
-          <div className={styles.lessons__plus_horizontal}></div>
-        </div>
-      </div>
     </Fragment>
   );
+
+  const empthyPage = (
+    <Fragment>
+      <Typography className={styles.title} fontWeight={700} variant="h4">
+        You don't have any lessons yet...
+      </Typography>
+      <Typography className={styles.title} fontWeight={700} variant="h5">
+        Sign in and create a lesson to begin
+      </Typography>
+      <Link href="/generate">
+        <div className={styles.button__create}>
+          <div className={styles.button__center}>
+            <div className={styles.button__plus}></div>
+            <div className={styles.button__plus_horizontal}></div>
+          </div>
+        </div>
+      </Link>
+    </Fragment>
+  );
+
+  return <Fragment>{props.user ? lessonPage : empthyPage}</Fragment>;
 }
 
 export default UserLessons;

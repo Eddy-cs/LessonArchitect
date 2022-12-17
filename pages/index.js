@@ -1,8 +1,10 @@
 import styles from "../styles/index.module.css";
+import Link from "next/link";
+import { Typography } from "@mui/material";
 import { Fragment, useEffect, useState } from "react";
-import LessonList from "../components/LessonList";
-import { auth } from "../components/Login";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../components/Login";
+import LessonList from "../components/LessonList";
 
 function UserLessons() {
   const [user] = useAuthState(auth);
@@ -21,25 +23,41 @@ function UserLessons() {
       const data = await response.json();
       setLessons(data.map((e) => ({ generatedLessons: [e] })));
       setIsLoading(true);
+      console.log(lessons);
     }
     getLessons();
   }, [user]);
 
-  return (
+  const lessonPage = (
     <Fragment>
       {isLoading === true ? (
         <LessonList lessons={lessons} pageTitle={"My Lessons"} />
       ) : (
         <div>Loading...</div>
       )}
-      <div className={styles.lessons__create}>
-        <div className={styles.lessons__center}>
-          <div className={styles.lessons__plus}></div>
-          <div className={styles.lessons__plus_horizontal}></div>
-        </div>
-      </div>
     </Fragment>
   );
+
+  const empthyPage = (
+    <Fragment>
+      <Typography className={styles.title} fontWeight={700} variant="h4">
+        You don't have any lessons yet...
+      </Typography>
+      <Typography className={styles.title} fontWeight={700} variant="h5">
+        Sign in and create a lesson to begin
+      </Typography>
+      <Link href="/generate">
+        <div className={styles.button__create}>
+          <div className={styles.button__center}>
+            <div className={styles.button__plus}></div>
+            <div className={styles.button__plus_horizontal}></div>
+          </div>
+        </div>
+      </Link>
+    </Fragment>
+  );
+
+  return <Fragment>{user ? lessonPage : empthyPage}</Fragment>;
 }
 
 export default UserLessons;

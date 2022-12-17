@@ -18,7 +18,7 @@ function AllStories() {
   return (
     <Fragment>
       {isLoading === true ? (
-        <LessonList lessons={lessons} pageTitle={"Explore Lessons"} />
+        <LessonList lessons={lessons} pageTitle={"Explore other lessons"} />
       ) : (
         <div>Loading...</div>
       )}

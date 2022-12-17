@@ -15,7 +15,7 @@ export default function Footer() {
           variant="p"
           className={styles.created}
         >
-          Created by Eddy S.
+          © 2022 Eddy Sanchez
         </Typography>
         <div className={styles.social}>
           <a href="https://github.com/Eddy-cs" target="_blank" rel="noreferrer">

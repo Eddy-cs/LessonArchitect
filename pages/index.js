@@ -5,7 +5,6 @@ import { Fragment, useEffect, useState } from "react";
 import LessonList from "../components/LessonList";
 
 function UserLessons(props) {
-  console.log("usuario", props.user);
   const [lessons, setLessons] = useState();
   const [isLoading, setIsLoading] = useState(false);
 

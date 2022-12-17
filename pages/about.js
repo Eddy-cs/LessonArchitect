@@ -9,8 +9,8 @@ export default function About() {
       <div className={styles.about}>
         <Typography variant="h4">Helping Teachers Teach</Typography>
         <Typography variant="h5">
-          I understand the challenges teachers face when it comes to lesson
-          planning. My mission is to provide quick and easy solutions to save
+          I understand the challenges teachers face when it comes to planning
+          for a lesson. This tool provides a quick and easy solution to save
           teachers time and energy, allowing them to focus on making meaningful
           connections with their students and inspiring them to learn.
         </Typography>

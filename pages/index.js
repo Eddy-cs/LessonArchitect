@@ -2,31 +2,30 @@ import styles from "../styles/index.module.css";
 import Link from "next/link";
 import { Typography } from "@mui/material";
 import { Fragment, useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../components/Login";
 import LessonList from "../components/LessonList";
 
-function UserLessons() {
-  const [user] = useAuthState(auth);
+function UserLessons(props) {
+  console.log("usuario", props.user);
   const [lessons, setLessons] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    async function getLessons() {
-      const response = await fetch("/api/user-data", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
-      });
-      const data = await response.json();
-      setLessons(data.map((e) => ({ generatedLessons: [e] })));
-      setIsLoading(true);
-      console.log(lessons);
+    if (props.user) {
+      async function getLessons() {
+        const response = await fetch("/api/user-data", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ uid: props.user.uid }),
+        });
+        const data = await response.json();
+        setIsLoading(true);
+        setLessons([data]);
+      }
+      getLessons();
     }
-    getLessons();
-  }, [user]);
+  }, [props.user]);
 
   const lessonPage = (
     <Fragment>
@@ -57,7 +56,7 @@ function UserLessons() {
     </Fragment>
   );
 
-  return <Fragment>{user ? lessonPage : empthyPage}</Fragment>;
+  return <Fragment>{props.user ? lessonPage : empthyPage}</Fragment>;
 }
 
 export default UserLessons;

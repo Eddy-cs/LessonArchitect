@@ -24,11 +24,7 @@ const lessonsCollectionRef = collection(db, "lessons");
 
 export default async function getClientData(req, res) {
   if (req.method === "GET") {
-    const data = await getDocs(lessonsCollectionRef);
-    const dataObject = data.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
-    }));
+    const dataObject = await getData();
     res.status(200).json(dataObject);
   }
 }

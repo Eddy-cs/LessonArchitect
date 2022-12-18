@@ -93,13 +93,13 @@ export default function StoryForm(props) {
             }}
           >
             <TextField
-              inputProps={{ maxLength: 25 }}
+              inputProps={{ maxLength: 40 }}
               required
               inputRef={subjectRef}
               label="Subject"
             />
             <TextField
-              inputProps={{ maxLength: 25 }}
+              inputProps={{ maxLength: 40 }}
               required
               inputRef={lessonRef}
               label="Lesson"

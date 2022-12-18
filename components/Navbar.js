@@ -37,14 +37,14 @@ export default function Navbar(props) {
       <Divider />
       <List>
         <ListItem disablePadding>
-          <Link href="/">
+          <Link href="/user-lessons">
             <ListItemButton variant="text" sx={{ textAlign: "center" }}>
               <ListItemText primary={"Lessons"} />
             </ListItemButton>
           </Link>
         </ListItem>
         <ListItem disablePadding>
-          <Link href="/generate">
+          <Link href="/">
             <ListItemButton variant="text" sx={{ textAlign: "center" }}>
               <ListItemText primary={"Create"} />
             </ListItemButton>
@@ -98,7 +98,7 @@ export default function Navbar(props) {
               flexGrow: 1,
             }}
           >
-            <Link href="/">
+            <Link href="/user-lessons">
               <Button sx={{ color: "#fff" }} variant="text">
                 Lessons
               </Button>
@@ -108,7 +108,7 @@ export default function Navbar(props) {
                 Explore
               </Button>
             </Link>
-            <Link href="/generate">
+            <Link href="/">
               <Button sx={{ color: "#fff" }} variant="text">
                 Create
               </Button>

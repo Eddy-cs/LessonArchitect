@@ -31,7 +31,7 @@ export async function checkRequestMax(requestUid) {
       allowRequest = false;
     }
   }
-  // Checks request if user is loged in
+  // Checks request if user is logged in
   else {
     const allDocuments = await getData();
     for (let i = 0; i < allDocuments.length; i++) {
@@ -56,7 +56,7 @@ export async function checkRequestMax(requestUid) {
 
 // Checks that client input data doesn't exeedes allowed maximum
 function checkRequestLength(reqGrade, reqSubject, reqTheme) {
-  if (reqGrade.length > 50 || reqSubject.length > 25 || reqTheme.length > 25) {
+  if (reqGrade.length > 50 || reqSubject.length > 40 || reqTheme.length > 40) {
     allowRequest = false;
   }
 }
@@ -78,7 +78,7 @@ async function contenFilter(resp) {
 
 // Concatenates string for openAI request
 function generatePrompt(grade, subject, theme) {
-  return `A lesson plan for a ${grade} class, subject ${subject}, lesson${theme}\n`;
+  return `A detailed lesson plan for a ${grade} class, subject ${subject}, lesson${theme}\n`;
 }
 
 export default async function openAiCreate(req, res) {
@@ -90,7 +90,7 @@ export default async function openAiCreate(req, res) {
   );
   if (allowRequest === true) {
     const completion = await openai.createCompletion({
-      model: "text-davinci-002",
+      model: "text-davinci-003",
       prompt: generatePrompt(
         req.body.generatedLesson.grade,
         req.body.generatedLesson.subject,

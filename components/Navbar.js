@@ -84,11 +84,11 @@ export default function Navbar(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Image width={50} height={50} src={"/icon.svg"}></Image>
+          <Image width={40} height={40} src={"/icon.svg"}></Image>
           <Typography
             variant="h5"
             component="div"
-            sx={{ flexGrow: 1, display: { sm: "block" } }}
+            sx={{ marginLeft: 1, flexGrow: 1, display: { sm: "block" } }}
           >
             LessonArchitect
           </Typography>

@@ -84,7 +84,12 @@ export default function Navbar(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Image width={40} height={40} src={"/icon.svg"}></Image>
+          <Image
+            alt="Lesson ArArchitect Logo"
+            width={40}
+            height={40}
+            src={"/icon.svg"}
+          ></Image>
           <Typography
             variant="h5"
             component="div"

@@ -31,9 +31,6 @@ function LessonList(props) {
           </Typography>
         </div>
       </CardContent>
-      {e.img && (
-        <Image width={500} height={500} src={e.img} alt={e.alt}></Image>
-      )}
       <CardContent>
         <Typography
           sx={{ whiteSpace: "pre-line", marginTop: -3 }}

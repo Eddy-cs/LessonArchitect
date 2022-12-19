@@ -39,7 +39,7 @@ function UserLessons(props) {
   const empthyPage = (
     <Fragment>
       <Typography className={styles.title} fontWeight={700} variant="h4">
-        You don't have any lessons yet...
+        You don&apos;t have any lessons yet...
       </Typography>
       <Typography className={styles.title} fontWeight={700} variant="h5">
         Sign in and create a lesson to begin

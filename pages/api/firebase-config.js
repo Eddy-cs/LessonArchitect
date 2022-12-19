@@ -6,6 +6,7 @@ import {
   getDocs,
   updateDoc,
   Timestamp,
+  addDoc,
 } from "firebase/firestore";
 
 const firebaseConfigServer = {
@@ -29,13 +30,24 @@ export default async function getClientData(req, res) {
   }
 }
 
-export async function addData(lessonData, docRef) {
-  updateDoc(docRef, {
-    generatedLessons: arrayUnion({
-      ...lessonData,
+// Adds lesson to user array of 'generatedLessons' if user exists
+// creates new user data if it doesn't
+export async function addData(lessonData, userData, docRef) {
+  console.log("addData");
+  if (docRef) {
+    updateDoc(docRef, {
+      generatedLessons: arrayUnion({
+        ...lessonData,
+        timestamp: Timestamp.now(),
+      }),
+    });
+  } else if (userData.uid) {
+    addDoc(lessonsCollectionRef, {
+      ...userData,
       timestamp: Timestamp.now(),
-    }),
-  });
+      generatedLessons: [lessonData],
+    });
+  }
 }
 
 export async function getData() {

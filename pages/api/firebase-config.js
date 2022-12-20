@@ -33,7 +33,6 @@ export default async function getClientData(req, res) {
 // Adds lesson to user array of 'generatedLessons' if user exists
 // creates new user data if it doesn't
 export async function addData(lessonData, userData, docRef) {
-  console.log("addData");
   if (docRef) {
     updateDoc(docRef, {
       generatedLessons: arrayUnion({

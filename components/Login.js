@@ -2,13 +2,13 @@ import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDxXaLWd1jhnpVICGBLYIczypN54NferlE",
-  authDomain: "little-fiction.firebaseapp.com",
-  projectId: "little-fiction",
-  storageBucket: "little-fiction.appspot.com",
-  messagingSenderId: "489385294877",
-  appId: "1:489385294877:web:0387e71cc07a529436daf4",
-  measurementId: "G-CVD3TDSZNS",
+  apiKey: "AIzaSyAtSu9PQoG_m0Jn7CFuWJUBHgtH19qghM0",
+  authDomain: "lessonarchitect-auth.firebaseapp.com",
+  projectId: "lessonarchitect-auth",
+  storageBucket: "lessonarchitect-auth.appspot.com",
+  messagingSenderId: "221360620840",
+  appId: "1:221360620840:web:b8d1caced49c3702a5fc1d",
+  measurementId: "G-FVQ7DEFD1Q",
 };
 
 const app = initializeApp(firebaseConfig);

@@ -78,7 +78,7 @@ async function contenFilter(resp) {
 
 // Concatenates string for openAI request
 function generatePrompt(grade, subject, theme) {
-  return `A detailed lesson plan for a ${grade} class, subject ${subject}, lesson${theme}\n`;
+  return `A detailed lesson plan for a ${grade} class, subject ${subject}, lesson${theme}`;
 }
 
 export default async function openAiCreate(req, res) {
@@ -89,18 +89,33 @@ export default async function openAiCreate(req, res) {
     req.body.generatedLesson.lesson
   );
   if (allowRequest === true) {
-    const completion = await openai.createCompletion({
+    const temperature = req.body.generatedLesson.randomness / 100;
+    const initialPrompt = generatePrompt(
+      req.body.generatedLesson.grade,
+      req.body.generatedLesson.subject,
+      req.body.generatedLesson.lesson
+    );
+
+    const completion1 = await openai.createCompletion({
       model: "text-davinci-003",
-      prompt: generatePrompt(
-        req.body.generatedLesson.grade,
-        req.body.generatedLesson.subject,
-        req.body.generatedLesson.lesson
-      ),
-      temperature: req.body.generatedLesson.randomness / 100,
+      prompt: initialPrompt,
+      temperature: temperature,
       top_p: 1,
-      max_tokens: 600,
+      max_tokens: 110,
     });
-    const response = completion.data.choices[0].text;
+
+    const completion2 = await openai.createCompletion({
+      model: "text-curie-001",
+      prompt: initialPrompt + completion1.data.choices[0].text,
+      temperature: temperature,
+      top_p: 1,
+      max_tokens: 400,
+    });
+
+    const response =
+      completion1.data.choices[0].text + completion2.data.choices[0].text;
+    console.log(response);
+
     const filterL = await contenFilter(response);
 
     // Checks if response contains inappropriate content based on contentFilter()

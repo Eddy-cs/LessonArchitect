@@ -96,25 +96,38 @@ export default async function openAiCreate(req, res) {
       req.body.generatedLesson.lesson
     );
 
+    //*Request split into 3 to bypass Vercels timeout limit of 5s
     const completion1 = await openai.createCompletion({
       model: "text-davinci-003",
       prompt: initialPrompt,
       temperature: temperature,
       top_p: 1,
-      max_tokens: 110,
+      max_tokens: 80,
     });
 
     const completion2 = await openai.createCompletion({
-      model: "text-curie-001",
+      model: "text-davinci-003",
       prompt: initialPrompt + completion1.data.choices[0].text,
+      temperature: temperature,
+      top_p: 1,
+      max_tokens: 80,
+    });
+
+    const completion3 = await openai.createCompletion({
+      model: "text-curie-001",
+      prompt:
+        initialPrompt +
+        completion1.data.choices[0].text +
+        completion2.data.choices[0].text,
       temperature: temperature,
       top_p: 1,
       max_tokens: 400,
     });
 
     const response =
-      completion1.data.choices[0].text + completion2.data.choices[0].text;
-    console.log(response);
+      completion1.data.choices[0].text +
+      completion2.data.choices[0].text +
+      completion3.data.choices[0].text;
 
     const filterL = await contenFilter(response);
 

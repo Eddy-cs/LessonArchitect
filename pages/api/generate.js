@@ -96,7 +96,6 @@ export default async function openAiCreate(req, res) {
       req.body.generatedLesson.lesson
     );
 
-    let startTime = Date.now();
     const completion1 = await openai.createCompletion({
       model: "text-davinci-003",
       prompt: initialPrompt,
@@ -104,11 +103,7 @@ export default async function openAiCreate(req, res) {
       top_p: 1,
       max_tokens: 110,
     });
-    let endTime = Date.now();
-    let requestTime = endTime - startTime;
-    console.log("Request took " + requestTime + "ms.");
 
-    let startTime2 = Date.now();
     const completion2 = await openai.createCompletion({
       model: "text-curie-001",
       prompt: initialPrompt + completion1.data.choices[0].text,
@@ -116,9 +111,6 @@ export default async function openAiCreate(req, res) {
       top_p: 1,
       max_tokens: 400,
     });
-    let endTime2 = Date.now();
-    let requestTime2 = endTime2 - startTime2;
-    console.log("Request took " + requestTime2 + "ms.");
 
     const response =
       completion1.data.choices[0].text + completion2.data.choices[0].text;

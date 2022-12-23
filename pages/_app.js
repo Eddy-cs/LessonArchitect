@@ -49,6 +49,11 @@ function MyApp({ Component, pageProps }) {
         <Head>
           <title>Lesson Architect</title>
         </Head>
+        <meta
+          name="description"
+          content="Generate a lesson plan with AI.
+Spend less time planning and more inspiring"
+        ></meta>
         <Navbar />
         <main className={styles.layout__grid}>
           <Component {...pageProps} user={user} />

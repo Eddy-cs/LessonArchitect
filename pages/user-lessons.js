@@ -36,26 +36,34 @@ function UserLessons(props) {
     </Fragment>
   );
 
-  const empthyPage = (
+  const emptyPage = (
     <Fragment>
-      <Typography className={styles.title} fontWeight={700} variant="h4">
-        You don&apos;t have any lessons yet...
-      </Typography>
-      <Typography className={styles.title} fontWeight={700} variant="h5">
-        Sign in and create a lesson to begin
-      </Typography>
-      <Link href="/">
-        <div className={styles.button__create}>
-          <div className={styles.button__center}>
-            <div className={styles.button__plus}></div>
-            <div className={styles.button__plus_horizontal}></div>
+      <div>
+        <Typography className={styles.title} fontWeight={700} variant="h4">
+          You don&apos;t have any lessons yet...
+        </Typography>
+        <Link href="/">
+          <div>
+            <div className={styles.button__create}>
+              <div className={styles.button__center}>
+                <div className={styles.button__plus}></div>
+                <div className={styles.button__plus_horizontal}></div>
+              </div>
+              <Typography
+                // className={styles.title}
+                fontWeight={700}
+                variant="h5"
+              >
+                Sign in and create a lesson to begin
+              </Typography>
+            </div>
           </div>
-        </div>
-      </Link>
+        </Link>
+      </div>
     </Fragment>
   );
 
-  return <Fragment>{props.user ? lessonPage : empthyPage}</Fragment>;
+  return <Fragment>{props.user ? lessonPage : emptyPage}</Fragment>;
 }
 
 export default UserLessons;

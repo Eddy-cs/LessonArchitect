@@ -28,6 +28,8 @@ export default function StoryForm(props) {
   async function submitHandler(event) {
     event.preventDefault();
     setButtonLoad("disabled");
+    setTitle("");
+    setResult("Generating lesson.. this may take up to 1 minute");
 
     const lessonData = {
       uid: props.userData.uid || "null",
@@ -42,18 +44,23 @@ export default function StoryForm(props) {
       },
     };
 
-    const response = await fetch("/api/generate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(lessonData),
-    });
+    try {
+      const response = await fetch("/api/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(lessonData),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    setResult(data.result);
-    setTitle(lessonRef.current.value);
+      setResult(data.result);
+      setTitle(lessonRef.current.value);
+    } catch (error) {
+      console.error(error);
+      setResult("Something went wrong, please try again.");
+    }
     setButtonLoad("contained");
   }
 
@@ -63,7 +70,6 @@ export default function StoryForm(props) {
 
   const sliderChange = (event) => {
     setRandomness(event.target.value);
-    console.log(randomness);
   };
 
   return (

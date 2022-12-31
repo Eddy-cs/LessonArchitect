@@ -36,7 +36,7 @@ function UserLessons(props) {
     </Fragment>
   );
 
-  const emptyPage = (
+  const empthyPage = (
     <Fragment>
       <div>
         <Typography className={styles.title} fontWeight={700} variant="h4">
@@ -63,7 +63,7 @@ function UserLessons(props) {
     </Fragment>
   );
 
-  return <Fragment>{props.user ? lessonPage : emptyPage}</Fragment>;
+  return <Fragment>{props.user ? lessonPage : empthyPage}</Fragment>;
 }
 
 export default UserLessons;

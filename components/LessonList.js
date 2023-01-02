@@ -1,8 +1,15 @@
 import { Fragment, useState } from "react";
-import { Card, CardContent, Typography, IconButton } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  Typography,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import AspectRatioIcon from "@mui/icons-material/AspectRatio";
 import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -17,7 +24,6 @@ function LessonList(props) {
   console.log(singleContent);
 
   function viewLesson(lessonData) {
-    console.log(lessonData);
     setSingleContent(
       <Card key={lessonData.timestamp}>
         <CardContent sx={{ paddingBottom: 1 }}>
@@ -43,9 +49,21 @@ function LessonList(props) {
                 : "Anonymous"}
             </Typography>
           </div>
-          <IconButton onClick={() => setExpand(false)}>
-            <ListAltOutlinedIcon color="primary" fontSize="medium" />
-          </IconButton>
+          <Tooltip title="List">
+            <IconButton onClick={() => setExpand(false)}>
+              <ListAltOutlinedIcon color="primary" fontSize="medium" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Copy to clipboard">
+            <IconButton
+              variant="outlined"
+              onClick={() => {
+                navigator.clipboard.writeText(lessonData.generatedLesson);
+              }}
+            >
+              <ContentCopyIcon color="primary" fontSize="medium" />
+            </IconButton>
+          </Tooltip>
         </CardContent>
 
         <CardContent>
@@ -88,12 +106,14 @@ function LessonList(props) {
                   align="right"
                   sx={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}
                 >
-                  <IconButton
-                    variant="outlined"
-                    onClick={() => viewLesson(row)}
-                  >
-                    <AspectRatioIcon color="primary" fontSize="small" />
-                  </IconButton>
+                  <Tooltip title="Expand">
+                    <IconButton
+                      variant="outlined"
+                      onClick={() => viewLesson(row)}
+                    >
+                      <AspectRatioIcon color="primary" fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
                 </TableCell>
                 <TableCell component="th" scope="row">
                   {row.lessonTitle}

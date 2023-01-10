@@ -146,8 +146,8 @@ export default async function openAiCreate(req, res) {
         generatedLesson: response,
       };
 
-      addData(lessonData, userData, docRef);
       res.status(200).json({ result: response });
+      addData(lessonData, userData, docRef);
     } else {
       res
         .status(200)

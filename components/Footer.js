@@ -24,7 +24,7 @@ export default function Footer() {
             </IconButton>
           </a>
           <a
-            href="https://www.linkedin.com/in/eddy-s-a6661a23a/"
+            href="https://www.linkedin.com/in/eddy-s/"
             target="_blank"
             rel="noreferrer"
           >

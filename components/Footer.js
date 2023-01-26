@@ -3,7 +3,7 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import WysiwygIcon from "@mui/icons-material/Wysiwyg";
 import { Divider, Typography, IconButton } from "@mui/material";
 import { Fragment } from "react";
-import styles from "./Footer.module.css";
+import styles from "../styles/Footer.module.css";
 
 export default function Footer() {
   return (

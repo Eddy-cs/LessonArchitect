@@ -15,8 +15,8 @@ export async function checkRequestMax(requestUid) {
   let anonRequests = 0;
   let userRequests = 0;
 
-  // Checks request if user is "null"
-  if (requestUid === "null") {
+  // Checks request if user is "Anonymous"
+  if (requestUid === "Anonymous") {
     docRef = doc(db, "lessons", "Vxhsl1Y6lZdMndTexmPU");
     let docSnap = await getDoc(docRef);
     let document = docSnap.data();
@@ -27,7 +27,7 @@ export async function checkRequestMax(requestUid) {
         anonRequests++;
       }
     }
-    if (anonRequests > 4) {
+    if (anonRequests > 29) {
       allowRequest = false;
     }
   }
@@ -48,7 +48,7 @@ export async function checkRequestMax(requestUid) {
         }
       }
     }
-    if (userRequests > 8) {
+    if (userRequests > 9) {
       allowRequest = false;
     }
   }

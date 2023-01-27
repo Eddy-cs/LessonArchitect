@@ -32,7 +32,7 @@ export default function StoryForm(props) {
     setResult("Generating lesson.. this may take up to 1 minute");
 
     const lessonData = {
-      uid: props.userData.uid || "null",
+      uid: props.userData.uid || "Anonymous",
       displayName: props.userData.displayName,
       email: props.userData.email,
       photoURL: props.userData.photoURL,

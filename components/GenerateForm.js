@@ -21,6 +21,7 @@ export default function StoryForm(props) {
   const [randomness, setRandomness] = useState(7);
   const [result, setResult] = useState();
   const [title, setTitle] = useState();
+  const [message, setMessage] = useState();
   const [buttonLoad, setButtonLoad] = useState("contained");
   const subjectRef = useRef();
   const lessonRef = useRef();
@@ -31,21 +32,22 @@ export default function StoryForm(props) {
     setTitle("");
     setResult("Generating lesson.. this may take up to 1 minute");
 
-    const lessonData = {
-      uid: props.userData.uid || "Anonymous",
-      displayName: props.userData.displayName,
-      email: props.userData.email,
-      photoURL: props.userData.photoURL,
-      generatedLesson: {
-        randomness: randomness,
-        subject: subjectRef.current.value,
-        lesson: lessonRef.current.value,
-        grade: grade,
-      },
-    };
-
     try {
-      const response = await fetch("/api/generate", {
+      const lessonData = {
+        uid: props.userData.uid || "Anonymous",
+        displayName: props.userData.displayName,
+        email: props.userData.email,
+        photoURL: props.userData.photoURL,
+        generatedLesson: {
+          randomness: randomness,
+          model: "text-davinci-003",
+          subject: subjectRef.current.value,
+          lesson: lessonRef.current.value,
+          grade: grade,
+        },
+      };
+
+      let response = await fetch("/api/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -53,10 +55,31 @@ export default function StoryForm(props) {
         body: JSON.stringify(lessonData),
       });
 
+      // Switches model used if OpenAI is at or near capacity
+      if (response.status >= 400 && response.status < 600) {
+        setResult(
+          "Generating lesson.. this may take up to 1 minute. \n Your result will be generated with an alternative model due to OpenAI being at capacity"
+        );
+
+        lessonData.generatedLesson.model = "text-curie-001";
+
+        response = await fetch("/api/generate", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(lessonData),
+        });
+      }
+
       const data = await response.json();
 
       setResult(data.result);
       setTitle(lessonRef.current.value);
+      lessonData.generatedLesson.model === "text-curie-001" &&
+        setMessage(
+          "Your result was generated with an alternative model due to OpenAI being at capacity. If you need an improved result please try again later."
+        );
     } catch (error) {
       console.error(error);
       setResult("Something went wrong, please try again.");
@@ -198,6 +221,19 @@ export default function StoryForm(props) {
         </form>
       </div>
       <Card className={styles.hero__result} variant="outlined">
+        {message && (
+          <Typography
+            className={styles.hero__model}
+            sx={{
+              margin: -2,
+              marginBottom: 2,
+              padding: 2,
+            }}
+            variant="subtitle1"
+          >
+            {message}
+          </Typography>
+        )}
         <Typography variant="h4">
           {result ===
           "Sorry, the maximum number of requests for today has been reached. Please sign in or try again tomorrow."

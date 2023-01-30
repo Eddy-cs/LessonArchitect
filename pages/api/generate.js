@@ -90,6 +90,7 @@ export default async function openAiCreate(req, res) {
   );
   if (allowRequest === true) {
     const temperature = req.body.generatedLesson.randomness / 100;
+    const model = req.body.generatedLesson.model;
     const initialPrompt = generatePrompt(
       req.body.generatedLesson.grade,
       req.body.generatedLesson.subject,
@@ -98,7 +99,7 @@ export default async function openAiCreate(req, res) {
 
     //*Request split into 3 to bypass Vercels timeout limit of 5s
     const completion1 = await openai.createCompletion({
-      model: "text-davinci-003",
+      model: model,
       prompt: initialPrompt,
       temperature: temperature,
       top_p: 1,
@@ -106,7 +107,7 @@ export default async function openAiCreate(req, res) {
     });
 
     const completion2 = await openai.createCompletion({
-      model: "text-davinci-003",
+      model: model,
       prompt: initialPrompt + completion1.data.choices[0].text,
       temperature: temperature,
       top_p: 1,

@@ -15,6 +15,11 @@
   margin-bottom: 8rem;
 }
 
+.hero__model{
+  background-color: rgb(196, 226, 255);
+  animation: 1000ms load ease-in
+}
+
 .hero{
  display: grid;
  grid-template-columns: 1fr 1fr;
@@ -22,9 +27,23 @@
  place-items: center;
  gap: 2rem;
 }
+
 @media (max-width: 600px) {
 .hero{
   display: flex;
   flex-direction: column;
 }
+}
+
+@keyframes load {
+  0% {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-7px);
+  }
+  100% {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

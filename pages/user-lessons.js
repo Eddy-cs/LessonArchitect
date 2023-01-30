@@ -43,20 +43,18 @@ function UserLessons(props) {
           You don&apos;t have any lessons yet...
         </Typography>
         <Link href="/">
-          <div>
-            <div className={styles.button__create}>
-              <div className={styles.button__center}>
-                <div className={styles.button__plus}></div>
-                <div className={styles.button__plus_horizontal}></div>
-              </div>
-              <Typography
-                // className={styles.title}
-                fontWeight={700}
-                variant="h5"
-              >
-                Sign in and create a lesson to begin
-              </Typography>
+          <div className={styles.button__create}>
+            <div className={styles.button__center}>
+              <div className={styles.button__plus}></div>
+              <div className={styles.button__plus_horizontal}></div>
             </div>
+            <Typography
+              // className={styles.title}
+              fontWeight={700}
+              variant="h5"
+            >
+              Sign in and create a lesson to begin
+            </Typography>
           </div>
         </Link>
       </div>

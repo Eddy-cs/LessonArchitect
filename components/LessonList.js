@@ -121,6 +121,15 @@ function LessonList(props) {
                 <TableCell align="right">{row.subject}</TableCell>
                 <TableCell align="right">{row.grade}</TableCell>
                 <TableCell align="right">-</TableCell>
+                <TableCell align="right">
+                  {new Date(row.timestamp.seconds * 1000)
+                    .toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })
+                    .toString()}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

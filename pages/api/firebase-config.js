@@ -7,6 +7,8 @@ import {
   updateDoc,
   Timestamp,
   addDoc,
+  getDoc,
+  doc,
 } from "firebase/firestore";
 
 const firebaseConfigServer = {
@@ -25,8 +27,10 @@ const lessonsCollectionRef = collection(db, "lessons");
 
 export default async function getClientData(req, res) {
   if (req.method === "GET") {
-    const dataObject = await getData();
-    res.status(200).json(dataObject);
+    let docRef = doc(db, "lessons", "Vxhsl1Y6lZdMndTexmPU");
+    let docSnap = await getDoc(docRef);
+    let document = docSnap.data();
+    res.status(200).json(document);
   }
 }
 

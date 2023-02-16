@@ -20,7 +20,7 @@ function UserLessons(props) {
         });
         const data = await response.json();
         setIsLoading(true);
-        setLessons([data]);
+        setLessons(data);
       }
       getLessons();
     }

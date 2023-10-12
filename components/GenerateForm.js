@@ -40,7 +40,7 @@ export default function StoryForm(props) {
         photoURL: props.userData.photoURL,
         generatedLesson: {
           randomness: randomness,
-          model: "text-davinci-003",
+          model: "gpt-4",
           subject: subjectRef.current.value,
           lesson: lessonRef.current.value,
           grade: grade,
@@ -58,10 +58,10 @@ export default function StoryForm(props) {
       // Switches model used if OpenAI is at or near capacity
       if (response.status >= 400 && response.status < 600) {
         setResult(
-          "Generating lesson.. this may take up to 1 minute. \n Your result will be generated with an alternative model due to OpenAI being at capacity"
+          "Generating lesson.. this may take up to 1 minute. \n Your result will be generated with an alternative model due to OpenAI experiencing high demand."
         );
 
-        lessonData.generatedLesson.model = "text-curie-001";
+        lessonData.generatedLesson.model = "gpt-3.5-turbo";
 
         response = await fetch("/api/generate", {
           method: "POST",
@@ -76,9 +76,9 @@ export default function StoryForm(props) {
 
       setResult(data.result);
       setTitle(lessonRef.current.value);
-      lessonData.generatedLesson.model === "text-curie-001" &&
+      lessonData.generatedLesson.model === "gpt-3.5-turbo" &&
         setMessage(
-          "Your result was generated with an alternative model due to OpenAI being at capacity. If you need an improved result please try again later."
+          "Your result was generated with an alternative model due to OpenAI experiencing high demand. \n If you need an improved result please try again later."
         );
     } catch (error) {
       console.error(error);

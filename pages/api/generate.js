@@ -1,11 +1,8 @@
-import { Configuration, OpenAIApi } from "openai";
 import { getData, addData, db } from "./firebase-config";
 import { getDoc, doc } from "firebase/firestore";
+import OpenAI from "openai";
 
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
+const openai = new OpenAI({ key: process.env.OPENAI_API_KEY });
 
 let allowRequest = true;
 let docRef;
@@ -63,17 +60,12 @@ function checkRequestLength(reqGrade, reqSubject, reqTheme) {
 
 // Request to content-filter-alpha to filter inappropriate content
 async function contenFilter(resp) {
-  const filterResponse = await openai
-    .createCompletion({
-      model: "content-filter-alpha",
-      prompt: `<|endoftext|>${resp}\n--\nLabel:`,
-      max_tokens: 1,
-      temperature: 0,
-      top_p: 0,
-      logprobs: 10,
-    })
-    .catch((error) => {});
-  return filterResponse.data["choices"][0]["text"];
+  const filterResponse = await openai.moderations
+    .create({ input: resp })
+    .catch((error) => {
+      console.log(error);
+    });
+  return filterResponse.results[0].flagged;
 }
 
 // Concatenates string for openAI request
@@ -97,43 +89,20 @@ export default async function openAiCreate(req, res) {
       req.body.generatedLesson.lesson
     );
 
-    //*Request split into 3 to bypass Vercels timeout limit of 5s
-    const completion1 = await openai.createCompletion({
+    const completion = await openai.chat.completions.create({
       model: model,
-      prompt: initialPrompt,
+      messages: [{ role: "user", content: initialPrompt }],
       temperature: temperature,
       top_p: 1,
-      max_tokens: 80,
+      max_tokens: 800,
     });
 
-    const completion2 = await openai.createCompletion({
-      model: model,
-      prompt: initialPrompt + completion1.data.choices[0].text,
-      temperature: temperature,
-      top_p: 1,
-      max_tokens: 80,
-    });
-
-    const completion3 = await openai.createCompletion({
-      model: "text-curie-001",
-      prompt:
-        initialPrompt +
-        completion1.data.choices[0].text +
-        completion2.data.choices[0].text,
-      temperature: temperature,
-      top_p: 1,
-      max_tokens: 400,
-    });
-
-    const response =
-      completion1.data.choices[0].text +
-      completion2.data.choices[0].text +
-      completion3.data.choices[0].text;
+    const response = completion.choices[0].message.content;
 
     const filterL = await contenFilter(response);
 
     // Checks if response contains inappropriate content based on contentFilter()
-    if (filterL == "0" || filterL == "1") {
+    if (filterL == false) {
       const userData = {
         uid: req.body.uid,
         displayName: req.body.displayName,

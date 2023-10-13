@@ -58,7 +58,7 @@ function checkRequestLength(reqGrade, reqSubject, reqTheme) {
   }
 }
 
-// Request to content-filter-alpha to filter inappropriate content
+// Request to moderation to filter inappropriate content
 async function contenFilter(resp) {
   const filterResponse = await openai.moderations
     .create({ input: resp })
@@ -89,15 +89,28 @@ export default async function openAiCreate(req, res) {
       req.body.generatedLesson.lesson
     );
 
-    const completion = await openai.chat.completions.create({
-      model: model,
-      messages: [{ role: "user", content: initialPrompt }],
-      temperature: temperature,
-      top_p: 1,
-      max_tokens: 800,
-    });
+    const completion = await openai.chat.completions
+      .create({
+        model: model,
+        messages: [{ role: "user", content: initialPrompt }],
+        stream: true,
+        temperature: temperature,
+        top_p: 1,
+        max_tokens: 80,
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
-    const response = completion.choices[0].message.content;
+    let response = "";
+
+    for await (const chunk of completion) {
+      if (chunk.choices[0].delta.content) {
+        response = response + chunk.choices[0].delta.content;
+      }
+    }
+
+    // const response = completion.choices[0].message.content;
 
     const filterL = await contenFilter(response);
 

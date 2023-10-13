@@ -96,7 +96,7 @@ export default async function openAiCreate(req, res) {
         stream: true,
         temperature: temperature,
         top_p: 1,
-        max_tokens: 80,
+        max_tokens: 800,
       })
       .catch((error) => {
         console.log(error);

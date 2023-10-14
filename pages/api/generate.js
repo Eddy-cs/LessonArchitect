@@ -2,6 +2,10 @@ import { getData, addData, db } from "./firebase-config";
 import { getDoc, doc } from "firebase/firestore";
 import OpenAI from "openai";
 
+export const config = {
+  runtime: "edge",
+};
+
 const openai = new OpenAI({ key: process.env.OPENAI_API_KEY });
 
 let allowRequest = true;
@@ -96,7 +100,7 @@ export default async function openAiCreate(req, res) {
         stream: true,
         temperature: temperature,
         top_p: 1,
-        max_tokens: 800,
+        max_tokens: 40,
       })
       .catch((error) => {
         console.log(error);

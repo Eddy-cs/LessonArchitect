@@ -98,12 +98,12 @@ export default async function openAiCreate(req, res) {
 
     const completion = await openai.chat.completions
       .create({
-        model: "gpt-3.5-turbo",
+        model: model,
         messages: [{ role: "user", content: initialPrompt }],
         stream: true,
         temperature: temperature,
         top_p: 1,
-        max_tokens: 50,
+        max_tokens: 800,
       })
       .catch((error) => {
         console.log(error);

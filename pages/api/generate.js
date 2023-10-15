@@ -1,5 +1,6 @@
 import { getData, addData, db } from "./firebase-config";
 import { getDoc, doc } from "firebase/firestore";
+import { Body } from "node-fetch";
 import OpenAI from "openai";
 
 export const config = {
@@ -78,29 +79,31 @@ function generatePrompt(grade, subject, theme) {
 }
 
 export default async function openAiCreate(req, res) {
-  await checkRequestMax(req.body.uid);
+  const body = await req.json();
+
+  await checkRequestMax(body.uid);
   checkRequestLength(
-    req.body.generatedLesson.grade,
-    req.body.generatedLesson.subject,
-    req.body.generatedLesson.lesson
+    body.generatedLesson.grade,
+    body.generatedLesson.subject,
+    body.generatedLesson.lesson
   );
   if (allowRequest === true) {
-    const temperature = req.body.generatedLesson.randomness / 100;
-    const model = req.body.generatedLesson.model;
+    const temperature = body.generatedLesson.randomness / 100;
+    const model = body.generatedLesson.model;
     const initialPrompt = generatePrompt(
-      req.body.generatedLesson.grade,
-      req.body.generatedLesson.subject,
-      req.body.generatedLesson.lesson
+      body.generatedLesson.grade,
+      body.generatedLesson.subject,
+      body.generatedLesson.lesson
     );
 
     const completion = await openai.chat.completions
       .create({
-        model: model,
+        model: "gpt-3.5-turbo",
         messages: [{ role: "user", content: initialPrompt }],
         stream: true,
         temperature: temperature,
         top_p: 1,
-        max_tokens: 40,
+        max_tokens: 50,
       })
       .catch((error) => {
         console.log(error);
@@ -113,7 +116,6 @@ export default async function openAiCreate(req, res) {
         response = response + chunk.choices[0].delta.content;
       }
     }
-
     // const response = completion.choices[0].message.content;
 
     const filterL = await contenFilter(response);
@@ -121,19 +123,19 @@ export default async function openAiCreate(req, res) {
     // Checks if response contains inappropriate content based on contentFilter()
     if (filterL == false) {
       const userData = {
-        uid: req.body.uid,
-        displayName: req.body.displayName,
-        email: req.body.email,
-        photoURL: req.body.photoURL,
+        uid: body.uid,
+        displayName: body.displayName,
+        email: body.email,
+        photoURL: body.photoURL,
       };
       const lessonData = {
-        lessonTitle: req.body.generatedLesson.lesson,
-        subject: req.body.generatedLesson.subject,
-        grade: req.body.generatedLesson.grade,
+        lessonTitle: body.generatedLesson.lesson,
+        subject: body.generatedLesson.subject,
+        grade: body.generatedLesson.grade,
         generatedLesson: response,
       };
       addData(lessonData, userData, docRef);
-      res.status(200).json({ result: response });
+      return Response.json({ result: response });
     } else {
       res
         .status(200)

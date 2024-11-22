@@ -7,12 +7,65 @@ const openai = new OpenAI({ key: process.env.OPENAI_API_KEY });
 let allowRequest = true;
 let docRef;
 
+// Base class demonstrating encapsulation with private fields
+class Lesson {
+  #grade;
+  #subject;
+  #theme;
+
+  constructor(grade, subject, theme) {
+    this.#grade = grade;
+    this.#subject = subject;
+    this.#theme = theme;
+  }
+
+  // Protected method for inheritance
+  _validateLength() {
+    return this.#grade.length <= 50 &&
+        this.#subject.length <= 40 &&
+        this.#theme.length <= 40;
+  }
+
+  // Getters demonstrate encapsulation
+  get grade() { return this.#grade; }
+  get subject() { return this.#subject; }
+  get theme() { return this.#theme; }
+
+  // Polymorphic method that derived classes can override
+  generatePrompt() {
+    return `A detailed lesson plan for a ${this.#grade} class, subject ${this.#subject}, lesson${this.#theme}`;
+  }
+}
+
+// Derived class demonstrating inheritance
+class GeneratedLesson extends Lesson {
+  #response;
+  #temperature;
+
+  constructor(grade, subject, theme, temperature) {
+    super(grade, subject, theme);
+    this.#temperature = temperature;
+    this.#response = "";
+  }
+
+  // Polymorphic override of base method
+  generatePrompt() {
+    return `Create a detailed and engaging lesson plan for a ${this.grade} class, subject ${this.subject}, lesson${this.theme}`;
+  }
+
+  setResponse(response) {
+    this.#response = response;
+  }
+
+  get response() { return this.#response; }
+  get temperature() { return this.#temperature; }
+}
+
 export async function checkRequestMax(requestUid) {
   const today = new Date().toLocaleDateString();
   let anonRequests = 0;
   let userRequests = 0;
 
-  // Checks request if user is "Anonymous"
   if (requestUid === "Anonymous") {
     docRef = doc(db, "lessons", "Vxhsl1Y6lZdMndTexmPU");
     let docSnap = await getDoc(docRef);
@@ -27,18 +80,14 @@ export async function checkRequestMax(requestUid) {
     if (anonRequests > 29) {
       allowRequest = false;
     }
-  }
-  // Checks request if user is logged in
-  else {
+  } else {
     const allDocuments = await getData();
     for (let i = 0; i < allDocuments.length; i++) {
       if (allDocuments[i].uid === requestUid) {
         docRef = doc(db, "lessons", allDocuments[i].docId);
         for (let e = 0; e < allDocuments[i].generatedLessons.length; e++) {
           const time = allDocuments[i].generatedLessons[e].timestamp;
-          const date = new Date(time.seconds * 1000).toLocaleDateString(
-            "en-US"
-          );
+          const date = new Date(time.seconds * 1000).toLocaleDateString("en-US");
           if (date == today) {
             userRequests++;
           }
@@ -51,56 +100,45 @@ export async function checkRequestMax(requestUid) {
   }
 }
 
-// Checks that client input data doesn't exeedes allowed maximum
-function checkRequestLength(reqGrade, reqSubject, reqTheme) {
-  if (reqGrade.length > 50 || reqSubject.length > 40 || reqTheme.length > 40) {
-    allowRequest = false;
-  }
-}
-
-// Request to moderation to filter inappropriate content
 async function contenFilter(resp) {
   const filterResponse = await openai.moderations
-    .create({ input: resp })
-    .catch((error) => {
-      console.log(error);
-    });
+      .create({ input: resp })
+      .catch((error) => {
+        console.log(error);
+      });
   return filterResponse.results[0].flagged;
-}
-
-// Concatenates string for openAI request
-function generatePrompt(grade, subject, theme) {
-  return `A detailed lesson plan for a ${grade} class, subject ${subject}, lesson${theme}`;
 }
 
 export default async function openAiCreate(req, res) {
   await checkRequestMax(req.body.uid);
-  checkRequestLength(
-    req.body.generatedLesson.grade,
-    req.body.generatedLesson.subject,
-    req.body.generatedLesson.lesson
-  );
-  if (allowRequest === true) {
-    const temperature = req.body.generatedLesson.randomness / 100;
-    const model = req.body.generatedLesson.model;
-    const initialPrompt = generatePrompt(
+
+  const generatedLesson = new GeneratedLesson(
       req.body.generatedLesson.grade,
       req.body.generatedLesson.subject,
-      req.body.generatedLesson.lesson
-    );
+      req.body.generatedLesson.lesson,
+      req.body.generatedLesson.randomness / 100
+  );
+
+  // Use class method for validation
+  allowRequest = generatedLesson._validateLength();
+
+  if (allowRequest === true) {
+    const model = req.body.generatedLesson.model;
+    // Use polymorphic method
+    const initialPrompt = generatedLesson.generatePrompt();
 
     const completion = await openai.chat.completions
-      .create({
-        model: model,
-        messages: [{ role: "user", content: initialPrompt }],
-        stream: true,
-        temperature: temperature,
-        top_p: 1,
-        max_tokens: 800,
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+        .create({
+          model: model,
+          messages: [{ role: "user", content: initialPrompt }],
+          stream: true,
+          temperature: generatedLesson.temperature,
+          top_p: 1,
+          max_tokens: 800,
+        })
+        .catch((error) => {
+          console.log(error);
+        });
 
     let response = "";
 
@@ -110,11 +148,9 @@ export default async function openAiCreate(req, res) {
       }
     }
 
-    // const response = completion.choices[0].message.content;
+    generatedLesson.setResponse(response);
+    const filterL = await contenFilter(generatedLesson.response);
 
-    const filterL = await contenFilter(response);
-
-    // Checks if response contains inappropriate content based on contentFilter()
     if (filterL == false) {
       const userData = {
         uid: req.body.uid,
@@ -123,22 +159,22 @@ export default async function openAiCreate(req, res) {
         photoURL: req.body.photoURL,
       };
       const lessonData = {
-        lessonTitle: req.body.generatedLesson.lesson,
-        subject: req.body.generatedLesson.subject,
-        grade: req.body.generatedLesson.grade,
-        generatedLesson: response,
+        lessonTitle: generatedLesson.theme,
+        subject: generatedLesson.subject,
+        grade: generatedLesson.grade,
+        generatedLesson: generatedLesson.response,
       };
       addData(lessonData, userData, docRef);
-      res.status(200).json({ result: response });
+      res.status(200).json({ result: generatedLesson.response });
     } else {
       res
-        .status(200)
-        .json({ result: "Please try again by modifying the input." });
+          .status(200)
+          .json({ result: "Please try again by modifying the input." });
     }
   } else {
     res.status(200).json({
       result:
-        "Sorry, the maximum number of requests for today has been reached. Please sign in or try again tomorrow.",
+          "Sorry, the maximum number of requests for today has been reached. Please sign in or try again tomorrow.",
     });
   }
 }
